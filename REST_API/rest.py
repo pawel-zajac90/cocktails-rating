@@ -1,8 +1,5 @@
-from flask import Flask, request, Blueprint
+from flask import Flask, Blueprint
 from flask_restful import Resource, Api
-from sqlalchemy import create_engine
-from json import dumps
-from flask_jsonpify import jsonify
 from REST_API import management
 from config import port
 
