@@ -1,4 +1,4 @@
-from cocktailes_rating import management, cocktails_rating
+from cocktails_rating import management, cocktails_rating
 from flask_restful import Resource
 
 

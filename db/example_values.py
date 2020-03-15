@@ -1,7 +1,7 @@
 import sqlite3
 from config import db_path
 from random import randint
-from cocktailes_rating.helpers import update_rate
+from cocktails_rating.helpers import update_rate
 
 con = sqlite3.connect(db_path)
 con.row_factory = sqlite3.Row
