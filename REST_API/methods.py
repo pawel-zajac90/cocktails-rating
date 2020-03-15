@@ -4,33 +4,32 @@ from flask_restful import Resource
 
 # Bars management
 class Pubs(Resource):
+    def __init__(self):
+        self.r = management.PubsManagement()
+
     def get(self):
-        r = management.PubsManagement()
-        content = r.get_pubs()
-        return content
+        return self.r.get_pubs()
 
     def post(self, pub_name):
-        r = management.PubsManagement()
-        return r.post_pub(pub_name)
+        return self.r.post_pub(pub_name)
 
     def delete(self, id):
-        r = management.PubsManagement()
-        return r.delete_pub(id)
+        return self.r.delete_pub(id)
 
 
 # Cocktails management
 class Cocktails(Resource):
+    def __init__(self):
+        self.r = management.CocktailsManagement()
+
     def get(self, id):
-        r = management.CocktailsManagement()
-        return r.get_cocktails(id)
+        return self.r.get_cocktails(id)
 
     def post(self, drink_name, pub_id):
-        r = management.CocktailsManagement()
-        return r.post_cocktail(drink_name, pub_id)
+        return self.r.post_cocktail(drink_name, pub_id)
 
     def delete(self, id):
-        r = management.CocktailsManagement()
-        return r.delete_cocktail(id)
+        return self.r.delete_cocktail(id)
 
 
 # Rating system
