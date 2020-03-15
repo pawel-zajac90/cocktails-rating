@@ -97,5 +97,3 @@ class CocktailsManagement:
             self.con.commit()
             return {'Status': 'Success'}
         return {'Status': 'Failed', 'Description': "Cocktail doesn't exist in this pub."}
-
-
