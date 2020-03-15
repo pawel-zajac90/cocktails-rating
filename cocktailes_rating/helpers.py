@@ -1,4 +1,4 @@
-# Helpers for management.py and rating.py.
+# Helpers for management.py and cocktails_rating.py.
 
 
 # Check if is record exist and return 1 if True.

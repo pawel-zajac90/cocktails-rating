@@ -1,6 +1,6 @@
 import sqlite3
 from config import db_path
-from REST_API.helpers import *
+from cocktailes_rating.helpers import *
 
 
 # Rating system.
@@ -62,6 +62,19 @@ class Rating:
                 result.append({'drink_name': drink_name, 'pub_name': names[i], 'rate': rating[i]})
             return result
         return {'Status': 'Failed', 'Description': "Cocktail doesn't exist."}
+
+    # Show all Cocktails with pubs and rates.
+    def all(self):
+        a = self.cur.execute('''
+                        SELECT c.drink_name, p.pub_name, c.rate
+                        FROM Cocktails as c
+                        INNER JOIN Pubs AS p
+                        ON c.pub_id = p.pub_id;
+                        ''')
+        result = []
+        for _ in a:
+            result.append({'drink_name': _['drink_name'], 'pub_name': _['pub_name'], 'rate': _['rate']})
+        return result
 
     # Add new rate for cocktail.
     def rate(self, rate, drink_id):

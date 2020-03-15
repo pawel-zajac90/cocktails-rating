@@ -17,11 +17,12 @@ api.add_resource(
     Cocktails,
     '/cocktails-rating/v1.0/cocktails/<int:id>',
     '/cocktails-rating/v1.0/cocktails/<string:drink_name>/<int:pub_id>',
-    '/cocktails-rating/v1.0/cocktails/<int:id>/<int:pub_id>'
+    '/cocktails-rating/v1.0/cocktails/<int:id>'
                 )
 api.add_resource(
     Rating,
-    '/cocktails-rating/v1.0/rating/<int:id>',
+    '/cocktails-rating/v1.0/rating/',
+    '/cocktails-rating/v1.0/rating/<int:pub_id>',
     '/cocktails-rating/v1.0/rating/<string:drink_name>',
     '/cocktails-rating/v1.0/rating/<int:drink_id>/<int:rate>'
                  )

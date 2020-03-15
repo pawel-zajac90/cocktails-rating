@@ -1,35 +1,35 @@
-from REST_API import management, rating
+from cocktailes_rating import management, cocktails_rating
 from flask_restful import Resource
 
 
-# Bars maganement
+# Bars management
 class Pubs(Resource):
     def get(self):
-        r = management.Pubs_management()
+        r = management.PubsManagement()
         content = r.get_pubs()
         return content
 
     def post(self, pub_name):
-        r = management.Pubs_management()
+        r = management.PubsManagement()
         return r.post_pub(pub_name)
 
     def delete(self, id):
-        r = management.Pubs_management()
+        r = management.PubsManagement()
         return r.delete_pub(id)
 
 
 # Cocktails management
 class Cocktails(Resource):
     def get(self, id):
-        r = management.Cocktails_management()
+        r = management.CocktailsManagement()
         return r.get_cocktails(id)
 
     def post(self, drink_name, pub_id):
-        r = management.Cocktails_management()
+        r = management.CocktailsManagement()
         return r.post_cocktail(drink_name, pub_id)
 
     def delete(self, id):
-        r = management.Cocktails_management()
+        r = management.CocktailsManagement()
         return r.delete_cocktail(id)
 
 
@@ -38,13 +38,15 @@ class Rating(Resource):
     # Get rates of all cocktails in pub if pub_id given
     # or
     # Get rates of single cocktails in all pubs if drink_name given.
-    def get(self, id=None, drink_name=None):
-        r = rating.Rating()
-        if drink_name == None:
-            return r.by_pubs(id)
-        else:
+    def get(self, pub_id=None, drink_name=None):
+        r = cocktails_rating.Rating()
+        if pub_id is not None:
+            return r.by_pubs(pub_id)
+        elif drink_name is not None:
             return r.by_cocktails(drink_name)
+        else:
+            return r.all()
 
     def patch(self, rate, drink_id):
-        r = rating.Rating()
+        r = cocktails_rating.Rating()
         return r.rate(rate, drink_id)

@@ -1,11 +1,11 @@
 import sqlite3
 from config import db_path
-from REST_API.helpers import check
+from cocktailes_rating.helpers import check
 
 # Classes for management of Pubs and Cocktails tables.
 
 
-class Pubs_management:
+class PubsManagement:
     def __init__(self):
         self.con = sqlite3.connect(db_path)
         self.con.row_factory = sqlite3.Row
@@ -28,7 +28,7 @@ class Pubs_management:
         if not check(self.cur, column='pub_name', table='Pubs', value1='pub_name', value2= pub_name):
             # Add new pub.
             self.cur.execute('''
-                            INSERT INTO Bars (pub_id, pub_name) 
+                            INSERT INTO Pubs (pub_id, pub_name) 
                             VALUES (?,?);''', (None, pub_name)
                              )
             self.con.commit()
@@ -49,7 +49,7 @@ class Pubs_management:
         return {'Status': 'Failed', 'Description': "Pub doesn't exist."}
 
 
-class Cocktails_management:
+class CocktailsManagement:
     def __init__(self):
         self.con = sqlite3.connect(db_path)
         self.con.row_factory = sqlite3.Row
