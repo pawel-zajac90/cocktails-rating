@@ -27,7 +27,6 @@ api.add_resource(
     '/cocktails-rating/v1.0/rating/<int:drink_id>/<int:rate>'
                  )
 
-
 app.register_blueprint(api_bp)
 
 if __name__ == '__main__':
