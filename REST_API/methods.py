@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 # Bars management
 class Pubs(Resource):
-    def __init__(self, r : management.PubsManagement()):
+    def __init__(self, r=management.PubsManagement()):
         self.r = r
 
     def get(self):
