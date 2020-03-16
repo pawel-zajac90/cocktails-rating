@@ -4,8 +4,8 @@ from flask_restful import Resource
 
 # Bars management
 class Pubs(Resource):
-    def __init__(self, r=management.PubsManagement()):
-        self.r = r
+    def __init__(self, r):
+        self.r = r if r else management.PubsManagement()
 
     def get(self):
         return self.r.get_pubs()

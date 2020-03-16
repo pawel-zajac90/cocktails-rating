@@ -17,3 +17,10 @@ pip install -r requirements.txt
 ```bash
 python3 app.py
 ```
+
+
+## Test
+
+```bash
+python3 -m pytest tests
+```
