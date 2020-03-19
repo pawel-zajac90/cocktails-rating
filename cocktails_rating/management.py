@@ -74,7 +74,7 @@ class CocktailsManagement:
     # Add new cocktail to Cocktails table.
     def post_cocktail(self, drink_name, pub_id):
         # Check if exist.
-        if not does_record_exists(self.cur, 'drink_name', 'pub_id', 'Cocktails', ('drink_name', drink_name), ('pub_id', pub_id)):
+        if not does_record_exists(self.cur, ('drink_name', 'pub_id'), 'Cocktails', ('drink_name', drink_name), ('pub_id', pub_id)):
             # Add new cocktail.
             self.cur.execute("""
                             INSERT INTO Cocktails (drink_id, drink_name, pub_id, rate) 

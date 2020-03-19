@@ -23,8 +23,8 @@ class Cocktails(Resource):
     def __init__(self, cocktails_management):
         self.r = cocktails_management(sqlite3.connect)
 
-    def get(self, drink_id):
-        return self.r.get_cocktails(drink_id)
+    def get(self, pub_id):
+        return self.r.get_cocktails(pub_id)
 
     def post(self, drink_name, pub_id):
         return self.r.post_cocktail(drink_name, pub_id)
