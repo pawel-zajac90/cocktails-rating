@@ -17,6 +17,7 @@ class FillTables:
             pub_list.append((None, name))
         cur.executemany('''
                     INSERT INTO Pubs (pub_id, pub_name) VALUES (?,?);''', pub_list)
+        return
 
     # Add cocktails from cocktails_list to Cocktails table for each pub from Pubs.
     def add_cocktails(self, cocktails_number):
@@ -36,6 +37,7 @@ class FillTables:
                     INSERT INTO Cocktails (drink_id, drink_name, pub_id, rate)
                     VALUES (?, ?, ?, ?);
                     ''', cocktails_list)
+        return
 
     # Add rating for each cocktail from Cocktails into Rating table.
     def add_rates(self):
@@ -52,6 +54,7 @@ class FillTables:
                     INSERT INTO Rating (rate_id, drink_id, pub_id, rate)
                     VALUES (?, ?, ?, ?);
                     ''', cocktails)
+        return
 
     # Update rates in Cocktails from rates in Rating using helpers module.
     def update(self):
@@ -64,6 +67,7 @@ class FillTables:
             ids.append(_['drink_id'])
         for _ in ids:
             update_rate(cur, con, _)
+        return
 
 
 if __name__ == '__main__':

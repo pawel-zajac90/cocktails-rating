@@ -1,0 +1,498 @@
+{
+	"info": {
+		"_postman_id": "c8d75237-3761-4692-b559-409977f4b1a3",
+		"name": "cocktails_rating",
+		"description": "# Introduction\nIt's back-end application to rate cocktails in pubs.\nYou can add new cocktails and pubs.\nYou can check ranking in few different ways.\n\n# Overview\nApp doesn't have authentication system added yet.\n\n# Error Codes\nStandard HTTP status codes:\n100 group - information\n200 group - success\n300 group - moved\n400 group - clients app error\n500 group - servers error\n\n# Rate limit\nNot added.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/cocktails-rating/v1.0/pubs",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/pubs",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"pubs"
+					]
+				},
+				"description": "Get all pubs names and ids from database.  (Pubs table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/pubs",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"pubs"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "/cocktails-rating/v1.0/pubs/<string:pub_name>",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/pubs/<string:pub_name>",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"pubs",
+						"<string:pub_name>"
+					]
+				},
+				"description": "Add new pub into database. (Pubs table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/pubs/<string:pub_name>",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"pubs",
+								"<string:pub_name>"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "/cocktails-rating/v1.0/pubs/<int:id>",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/pubs/<int:id>",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"pubs",
+						"<int:id>"
+					]
+				},
+				"description": "Delete choosed pub (Pubs table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/pubs/<int:id>",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"pubs",
+								"<int:id>"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "/cocktails-rating/v1.0/cocktails/<int:id>",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/cocktails/<int:id>",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"cocktails",
+						"<int:id>"
+					]
+				},
+				"description": "Get all cocktails from the selected pub. (Cocktails table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/cocktails/<int:id>",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"cocktails",
+								"<int:id>"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "/cocktails-rating/v1.0/cocktails/<string:drink_name>/<int:pub_id>",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/cocktails/<string:drink_name>/<int:pub_id>",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"cocktails",
+						"<string:drink_name>",
+						"<int:pub_id>"
+					]
+				},
+				"description": "Add new cocktail into database. (Cocktails table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/cocktails/<string:drink_name>/<int:pub_id>",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"cocktails",
+								"<string:drink_name>",
+								"<int:pub_id>"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "/cocktails-rating/v1.0/cocktails/<int:id>",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/cocktails/<int:id>",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"cocktails",
+						"<int:id>"
+					]
+				},
+				"description": "Delte choosed cocktail. (Cocktails table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/cocktails/<int:id>",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"cocktails",
+								"<int:id>"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "/cocktails-rating/v1.0/rating/",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/rating/",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"rating",
+						""
+					]
+				},
+				"description": "Show all Cocktails with pubs and rates. (Cocktails table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/rating/",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"rating",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "/cocktails-rating/v1.0/rating/<int:pub_id>",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/rating/<int:pub_id>",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"rating",
+						"<int:pub_id>"
+					]
+				},
+				"description": "Check ratings for all cocktails in choosed pub. (Cocktails table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/rating/<int:pub_id>",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"rating",
+								"<int:pub_id>"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "/cocktails-rating/v1.0/rating/<string:drink_name>",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/rating/<string:drink_name>",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"rating",
+						"<string:drink_name>"
+					]
+				},
+				"description": "Check rating for choosed cocktail in all bars. (Cocktails table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/rating/<string:drink_name>",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"rating",
+								"<string:drink_name>"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "/cocktails-rating/v1.0/rating/<int:drink_id>/<int:rate>",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "/cocktails-rating/v1.0/rating/<int:drink_id>/<int:rate>",
+					"path": [
+						"cocktails-rating",
+						"v1.0",
+						"rating",
+						"<int:drink_id>",
+						"<int:rate>"
+					]
+				},
+				"description": "Add new rate. (Rating table)"
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "/cocktails-rating/v1.0/rating/<int:drink_id>/<int:rate>",
+							"path": [
+								"cocktails-rating",
+								"v1.0",
+								"rating",
+								"<int:drink_id>",
+								"<int:rate>"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"protocolProfileBehavior": {}
+}

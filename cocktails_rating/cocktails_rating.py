@@ -5,22 +5,22 @@ from cocktails_rating.helpers import *
 
 # Rating system.
 class Rating:
-    def __init__(self):
-        self.con = sqlite3.connect(db_path)
+    def __init__(self, con):
+        self.con = con(db_path)
         self.con.row_factory = sqlite3.Row
         self.cur = self.con.cursor()
 
-    # Check ratings for all cocktails in bar
+    # Check ratings for all cocktails in pub.
     def by_pubs(self, pub_id):
         # Check if exist.
-        if check(self.cur, column='pub_id', table='Pubs', value1='pub_id', value2=pub_id):
+        if does_record_exists(self.cur, 'pub_id', 'Pubs', ('pub_id', pub_id)):
             # Check bar name
             pub_name = (get_data(self.cur, "pub_name", "Pubs", "pub_id", pub_id)[0])
 
-            # Create drinks list for this pub
+            # Create drinks list for this pub.
             drinks = get_data(self.cur, "drink_name", "Cocktails", "pub_id", pub_id)
 
-            # Create dictionary with results
+            # Create dictionary with results.
             result = []
             for drink in drinks:
                 rate = average_rating(self.cur, pub_id)
@@ -30,9 +30,9 @@ class Rating:
 
     # Check rating for cocktail in all bars.
     def by_cocktails(self, drink_name):
-        # Check if exist.
-        if check(self.cur, column='drink_name', table='Cocktails', value1='drink_name', value2=drink_name):
-            # Make a list of pubs name and id.
+        # Check if exists.
+        if does_record_exists(self.cur, 'drink_name', 'Cocktails', ('drink_name', drink_name)):
+            # Create a list of pubs name and id.
             r = self.cur.execute('''
                                    SELECT b.pub_name, b.pub_id
                                    FROM Cocktails AS c
@@ -47,7 +47,7 @@ class Rating:
                 index.append(_['pub_id'])
                 names.append(_['pub_name'])
 
-            # Check rates for cocktails in each pub.
+            # Check the rates for cocktails in each pub.
             rating = []
             for _ in index:
                 rate_in_pub = self.cur.execute('''
@@ -82,7 +82,7 @@ class Rating:
         if rate < 1 or rate > 5:
             return {'Status': 'Failed', 'Description': "Rate need to be between 1 and 5"}
         # Check if exist.
-        if check(self.cur, column='drink_id', table='Cocktails', value1='drink_id', value2=drink_id):
+        if does_record_exists(self.cur, 'drink_id', 'Cocktails', ('drink_id', drink_id)):
             # Add new rate to Rating table.
             self.cur.execute('''
                             INSERT INTO Rating (rate_id, drink_id, pub_id, rate)

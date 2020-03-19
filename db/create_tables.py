@@ -1,13 +1,9 @@
 import sqlite3
 from config import db_path
 
-con = sqlite3.connect(db_path)
-con.row_factory = sqlite3.Row
-cur = con.cursor()
-
 
 # Create tables
-def create():
+def create(cur):
     cur.execute("""
         CREATE TABLE IF NOT EXISTS Pubs (
         pub_id INTEGER PRIMARY KEY ASC,
@@ -29,8 +25,10 @@ def create():
         pub_id int NOT NULL,
         rate int(5));
         ''')
-    return
+    return True
 
 
 if __name__ == '__main__':
-    create()
+    con = sqlite3.connect(db_path)
+    con.row_factory = sqlite3.Row
+    create(con.cursor())

@@ -1,13 +1,13 @@
 import sqlite3
 from config import db_path
-from cocktails_rating.helpers import check
+from cocktails_rating.helpers import does_record_exists
 
 # Classes for management of Pubs and Cocktails tables.
 
 
 class PubsManagement:
-    def __init__(self):
-        self.con = sqlite3.connect(db_path)
+    def __init__(self, con):
+        self.con = con(db_path)
         self.con.row_factory = sqlite3.Row
         self.cur = self.con.cursor()
 
@@ -25,7 +25,7 @@ class PubsManagement:
     # Add new pub into Pubs table.
     def post_pub(self, pub_name):
         # Check if exist.
-        if not check(self.cur, column='pub_name', table='Pubs', value1='pub_name', value2= pub_name):
+        if not does_record_exists(self.cur, 'pub_name', 'Pubs', ('pub_name', pub_name)):
             # Add new pub.
             self.cur.execute('''
                             INSERT INTO Pubs (pub_id, pub_name) 
@@ -38,7 +38,7 @@ class PubsManagement:
     # Delete pub from Pubs table.
     def delete_pub(self, id):
         # Check if exist.
-        if check(self.cur, column='pub_id', table='Pubs', value1='pub_id', value2=id):
+        if does_record_exists(self.cur, 'pub_id', 'Pubs', ('pub_id', id)):
             # Delete pub.
             self.cur.execute('''
                             DELETE FROM Pubs
@@ -50,15 +50,15 @@ class PubsManagement:
 
 
 class CocktailsManagement:
-    def __init__(self):
-        self.con = sqlite3.connect(db_path)
+    def __init__(self, con):
+        self.con = con(db_path)
         self.con.row_factory = sqlite3.Row
         self.cur = self.con.cursor()
 
     # Get list of cocktails in single pub from Cocktails table.
     def get_cocktails(self, pub_id):
         # Check if exist.
-        if check(self.cur, column='pub_id', table='Pubs', value1='pub_id', value2=pub_id):
+        if does_record_exists(self.cur, 'pub_id', 'Pubs', ('pub_id', pub_id)):
             # Get list.
             r = self.cur.execute('''SELECT * 
                                 FROM Cocktails 
@@ -74,8 +74,7 @@ class CocktailsManagement:
     # Add new cocktail to Cocktails table.
     def post_cocktail(self, drink_name, pub_id):
         # Check if exist.
-        if not check(self.cur, column='drink_name', column2='pub_id', table='Cocktails',
-                     value1='drink_name', value2=drink_name, value3='pub_id', value4=pub_id):
+        if not does_record_exists(self.cur, 'drink_name', 'pub_id', 'Cocktails', ('drink_name', drink_name), ('pub_id', pub_id)):
             # Add new cocktail.
             self.cur.execute("""
                             INSERT INTO Cocktails (drink_id, drink_name, pub_id, rate) 
@@ -88,7 +87,7 @@ class CocktailsManagement:
     # Delete cocktail from Cocktails table.
     def delete_cocktail(self, drink_id):
         # Check if exist.
-        if check(self.cur, column='drink_id', table='Cocktails', value1='drink_id', value2=drink_id):
+        if does_record_exists(self.cur, 'drink_id', 'Cocktails', ('drink_id', drink_id)):
             # Delete cocktail.
             self.cur.execute('''
                             DELETE FROM Cocktails 
