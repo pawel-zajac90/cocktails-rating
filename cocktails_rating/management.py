@@ -1,7 +1,8 @@
 import sqlite3
 from config import db_path
 from cocktails_rating.helpers import does_record_exists
-
+from authorization.auth import token_required
+from flask import request
 # Classes for management of Pubs and Cocktails tables.
 
 
@@ -12,6 +13,7 @@ class PubsManagement:
         self.cur = self.con.cursor()
 
     # Get list of all pubs from Pubs table.
+    @token_required
     def get_pubs(self):
         r = self.cur.execute('''
                             SELECT *
