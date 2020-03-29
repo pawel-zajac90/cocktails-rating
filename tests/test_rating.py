@@ -152,3 +152,10 @@ class TestRating:
         for _ in nr:
             number_of_ratings_after.append(_[0])
         assert number_of_ratings_before < number_of_ratings_after
+
+
+test = TestRating()
+test.test_get_all()
+test.test_get_by_cocktails()
+test.test_get_by_pubs()
+test.test_patch()

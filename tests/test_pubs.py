@@ -62,6 +62,7 @@ class TestPubs:
                         '''.format(self.newest_pub_id))
         for _ in n:
             db_newest_pub_name = _['pub_name']
+        print(db_newest_pub_name)
         assert new_pub_name == db_newest_pub_name
 
     def test_delete(self):
@@ -84,3 +85,9 @@ class TestPubs:
             result = bool(_[0])
 
         assert result is True
+
+
+test = TestPubs()
+test.test_get()
+test.test_post()
+test.test_delete()

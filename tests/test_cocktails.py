@@ -40,11 +40,11 @@ class TestCocktails:
         con = sqlite3.connect('../db/cocktails.db')
         cur = con.cursor()
 
-        endpoint = '/cocktails-rating/v1.0/pubs'
+        endpoint = '/cocktails-rating/v1.0/cocktails/'
         host = 'localhost:'
         new_cocktail_name = 'example_cocktail'
         pub_id = '1'
-        url = 'http://' + host + port + endpoint + '/' + new_cocktail_name + '/' + pub_id
+        url = 'http://' + host + port + endpoint + new_cocktail_name + '/' + pub_id
 
         i = cur.execute('''
                         SELECT drink_id
@@ -64,6 +64,7 @@ class TestCocktails:
                         FROM Cocktails
                         WHERE drink_id = {}   
                         '''.format(self.newest_cocktail_id))
+        con.commit()
         for _ in n:
             db_newest_cocktail_name = _[0]
         assert new_cocktail_name == db_newest_cocktail_name
@@ -72,21 +73,25 @@ class TestCocktails:
         con = sqlite3.connect('../db/cocktails.db')
         cur = con.cursor()
 
-        endpoint = '/cocktails-rating/v1.0/cocktails'
+        endpoint = '/cocktails-rating/v1.0/cocktails/'
         host = 'localhost:'
-        cocktails_to_delete_id = '6'
-        url = 'http://' + host + port + endpoint + '/' + cocktails_to_delete_id
-
+        cocktails_to_delete_id = '51'
+        url = 'http://' + host + port + endpoint + cocktails_to_delete_id
+        print(url)
         requests.delete(url)
 
         r = cur.execute('''
                         SELECT 1 
                         WHERE EXISTS 
-                        (SELECT {} FROM Cocktails)'''.format(cocktails_to_delete_id))
+                        (SELECT * FROM Cocktails WHERE drink_id = {})'''.format(cocktails_to_delete_id))
+        con.commit()
         for _ in r:
             result = bool(_[0])
 
-        assert result is True
+        assert result is False
+
 
 test = TestCocktails()
-test.test_get()
+# test.test_get()
+# test.test_post()
+test.test_delete()

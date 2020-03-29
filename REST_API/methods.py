@@ -1,6 +1,6 @@
-from cocktails_rating import management, cocktails_rating
 from flask_restful import Resource
 import sqlite3
+from flask_login import login_required
 
 
 # Bars management
@@ -51,3 +51,33 @@ class Rating(Resource):
 
     def patch(self, rate, drink_id):
         return self.r.rate(rate, drink_id)
+
+
+class Login(Resource):
+    def __init__(self, login):
+        self.r = login(sqlite3.connect)
+
+    def get(self):
+        return self.r.loginto()
+
+    def logout(self):
+        pass
+
+
+class SignUp(Resource):
+    def __init__(self, registration):
+        self.r = registration(sqlite3.connect)
+
+    def post(self, login, password, email):
+        return self.r.new_user(login, password, email)
+
+
+class Password(Resource):
+    def __init__(self, password):
+        self.r = password(sqlite3.connect)
+
+    def get(self):
+        return "Hello Boss!"
+
+    def patch(self, login, email):
+        return self.r.send_new_password(login, email)

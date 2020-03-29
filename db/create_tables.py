@@ -32,3 +32,4 @@ if __name__ == '__main__':
     con = sqlite3.connect(db_path)
     con.row_factory = sqlite3.Row
     create(con.cursor())
+    con.commit()
