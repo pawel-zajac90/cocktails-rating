@@ -5,6 +5,7 @@ import crypt
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
+
 app = current_app
 
 
@@ -58,10 +59,13 @@ class Log:
         auth = request.authorization
         login = auth.username
         password = auth.password
+        print(auth)
+        print(password)
+        print(login)
         if not does_record_exists(self.cur, 'login', 'Users', ('login', login)):
             return {'Status: ': 'Failed', 'Description: ': "User doesn't exsist."}
 
-        elif auth and check_password_hash(self.get_hash_from_db(login), password):
+        elif check_password_hash(self.get_hash_from_db(login), password):
             token = jwt.encode(
                 {'user': auth.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)},
                 app['secret_key'])
