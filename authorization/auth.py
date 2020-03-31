@@ -5,16 +5,26 @@ import crypt
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
-<<<<<<< HEAD
 from functools import wraps
-<<<<<<< HEAD
-from flask_jwt_extended import set_access_cookies
-=======
->>>>>>> parent of f3933b2... tokens works, decorator 'token_required' added
-=======
->>>>>>> parent of 881dcd7... changed
 
 app = current_app
+
+
+def token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        token = request.args.get('token')
+
+        if not token:
+            return {'Status: ': 'Failed', 'Description: ': 'Token is missing.'}
+
+        try:
+            data = jwt.decode(token, app.config['secret_key'])
+        except:
+            return {'Status: ': 'Failed', 'Description: ': 'Token is invalid.'}
+
+        return f(*args, **kwargs)
+    return decorated
 
 
 class Registration:
@@ -60,35 +70,21 @@ class Log:
                         ''')
         hash= []
         for _ in value:
-            hash.append(_[0])
+            hash = _[0]
         return hash
 
     def loginto(self):
         auth = request.authorization
         login = auth.username
         password = auth.password
-        print(auth)
-        print(password)
-        print(login)
         if not does_record_exists(self.cur, 'login', 'Users', ('login', login)):
             return {'Status: ': 'Failed', 'Description: ': "User doesn't exsist."}
 
         elif check_password_hash(self.get_hash_from_db(login), password):
             token = jwt.encode(
                 {'user': auth.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)},
-<<<<<<< HEAD
                 app.config['secret_key'])
-<<<<<<< HEAD
-            # response = jsonify({'Status: ': 'Success', 'Token': token.decode('UTF-8')})
-            # set_access_cookies(response, token)
-            return token
-=======
-                app['secret_key'])
-            return {'Status: ': 'Success', 'Token': token.decode('UTH-8')}
->>>>>>> parent of f3933b2... tokens works, decorator 'token_required' added
-=======
             return {'Status: ': 'Success', 'Token': token.decode('UTF-8')}
->>>>>>> parent of 881dcd7... changed
 
         return {'Status: ': 'Failed', 'Description': 'Incorrect Password'}
 

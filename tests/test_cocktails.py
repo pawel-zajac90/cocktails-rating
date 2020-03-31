@@ -81,14 +81,14 @@ class TestCocktails:
         requests.delete(url)
 
         r = cur.execute('''
-                        SELECT 1 
-                        WHERE EXISTS 
-                        (SELECT * FROM Cocktails WHERE drink_id = {})'''.format(cocktails_to_delete_id))
+                        SELECT COUNT(*) 
+                        FROM Cocktails
+                        WHERE drink_id = {}'''.format(cocktails_to_delete_id))
         con.commit()
         for _ in r:
             result = bool(_[0])
 
-        assert result is False
+        assert not result
 
 
 test = TestCocktails()
