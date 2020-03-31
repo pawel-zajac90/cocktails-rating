@@ -1,8 +1,7 @@
 import sqlite3
 from config import db_path
 from cocktails_rating.helpers import does_record_exists
-from authorization.auth import token_required
-from flask import request
+
 # Classes for management of Pubs and Cocktails tables.
 
 
