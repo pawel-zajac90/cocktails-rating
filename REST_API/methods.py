@@ -1,21 +1,19 @@
 from flask_restful import Resource
 import sqlite3
-from authorization.auth import token_required
+from flask_login import login_required
 
 
 # Bars management
 class Pubs(Resource):
     def __init__(self, pubs_management):
         self.r = pubs_management(sqlite3.connect)
-    @token_required
+
     def get(self):
         return self.r.get_pubs()
 
-    @token_required
     def post(self, pub_name):
         return self.r.post_pub(pub_name)
 
-    @token_required
     def delete(self, id):
         return self.r.delete_pub(id)
 
@@ -28,11 +26,9 @@ class Cocktails(Resource):
     def get(self, pub_id):
         return self.r.get_cocktails(pub_id)
 
-    @token_required
     def post(self, drink_name, pub_id):
         return self.r.post_cocktail(drink_name, pub_id)
 
-    @token_required
     def delete(self, drink_id):
         return self.r.delete_cocktail(drink_id)
 
@@ -53,7 +49,6 @@ class Rating(Resource):
         else:
             return self.r.all()
 
-    @token_required
     def patch(self, rate, drink_id):
         return self.r.rate(rate, drink_id)
 
@@ -63,9 +58,8 @@ class Login(Resource):
         self.r = login(sqlite3.connect)
 
     def get(self):
-        return self.r.authorization()
+        return self.r.loginto()
 
-    @token_required
     def logout(self):
         pass
 

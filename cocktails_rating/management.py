@@ -12,6 +12,7 @@ class PubsManagement:
         self.cur = self.con.cursor()
 
     # Get list of all pubs from Pubs table.
+    @token_required
     def get_pubs(self):
         r = self.cur.execute('''
                             SELECT *

@@ -1,4 +1,4 @@
-from flask import request, current_app, jsonify
+from flask import Flask, jsonify, request, make_response, current_app
 from cocktails_rating.helpers import does_record_exists
 import sqlite3
 import crypt
@@ -7,9 +7,12 @@ import jwt
 import datetime
 <<<<<<< HEAD
 from functools import wraps
+<<<<<<< HEAD
 from flask_jwt_extended import set_access_cookies
 =======
 >>>>>>> parent of f3933b2... tokens works, decorator 'token_required' added
+=======
+>>>>>>> parent of 881dcd7... changed
 
 app = current_app
 
@@ -43,7 +46,7 @@ class Registration:
         return
 
 
-class Login:
+class Log:
     def __init__(self, con):
         self.con = con('../db/authorization.db')
         self.con.row_factory = sqlite3.Row
@@ -60,7 +63,7 @@ class Login:
             hash.append(_[0])
         return hash
 
-    def authorization(self):
+    def loginto(self):
         auth = request.authorization
         login = auth.username
         password = auth.password
@@ -75,6 +78,7 @@ class Login:
                 {'user': auth.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)},
 <<<<<<< HEAD
                 app.config['secret_key'])
+<<<<<<< HEAD
             # response = jsonify({'Status: ': 'Success', 'Token': token.decode('UTF-8')})
             # set_access_cookies(response, token)
             return token
@@ -82,11 +86,12 @@ class Login:
                 app['secret_key'])
             return {'Status: ': 'Success', 'Token': token.decode('UTH-8')}
 >>>>>>> parent of f3933b2... tokens works, decorator 'token_required' added
+=======
+            return {'Status: ': 'Success', 'Token': token.decode('UTF-8')}
+>>>>>>> parent of 881dcd7... changed
 
         return {'Status: ': 'Failed', 'Description': 'Incorrect Password'}
 
-    def logout(self):
-        pass
 
 class ForgotPassword:
     def __init__(self, con):
