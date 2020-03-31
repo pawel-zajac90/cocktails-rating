@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, make_response, current_app
+from flask import request, current_app, jsonify
 from cocktails_rating.helpers import does_record_exists
 import sqlite3
 import crypt
@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
 import datetime
 from functools import wraps
+from flask_jwt_extended import set_access_cookies
 
 app = current_app
 
@@ -53,7 +54,7 @@ class Registration:
         return
 
 
-class Log:
+class Login:
     def __init__(self, con):
         self.con = con('../db/authorization.db')
         self.con.row_factory = sqlite3.Row
@@ -69,7 +70,7 @@ class Log:
             hash = _[0]
         return hash
 
-    def loginto(self):
+    def authorization(self):
         auth = request.authorization
         login = auth.username
         password = auth.password
@@ -81,10 +82,14 @@ class Log:
             token = jwt.encode(
                 {'user': auth.username, 'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)},
                 app.config['secret_key'])
-            return {'Status: ': 'Success', 'Token': token.decode('UTF-8')}
+            # response = jsonify({'Status: ': 'Success', 'Token': token.decode('UTF-8')})
+            # set_access_cookies(response, token)
+            return token
 
         return {'Status: ': 'Failed', 'Description': 'Incorrect Password'}
 
+    def logout(self):
+        pass
 
 class ForgotPassword:
     def __init__(self, con):

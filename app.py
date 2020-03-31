@@ -1,13 +1,15 @@
 from cocktails_rating import management, cocktails_rating
-from flask import Flask, Blueprint
+from flask import Flask, Blueprint, session
 from flask_restful import Api
 from config import port
 from REST_API.methods import *
 from authorization import auth
 
-
 app = Flask(__name__)
 app.config['secret_key'] = 'thisisthesecretkey'
+# app.config['JWT_TOKEN_LOCATION'] = 'cookies'
+# app.config['JWT_ACCESS_COOKIE_NAME'] = 'cookie_name'
+# app.config['JWT_SECCION_COOKIE'] = False
 api_bp = Blueprint('api', __name__)
 api = Api(api_bp)
 
@@ -46,7 +48,7 @@ api.add_resource(
 api.add_resource(
     Login,
     '/cocktails-rating/v1.0/login',
-    resource_class_kwargs={'login': auth.Log}
+    resource_class_kwargs={'login': auth.Login}
                 )
 
 api.add_resource(
