@@ -8,9 +8,8 @@ def does_record_exists(cur, column, table, *fields):
     """
 
     fields_query = ' AND '.join(['{} = "{}"'.format(name, value) for name, value in fields])
-    result = cur.execute('''SELECT 1 
-                        WHERE EXISTS 
-                        (SELECT {} FROM {} WHERE {})
+    result = cur.execute('''SELECT COUNT ({}) 
+                         FROM {} WHERE {}
                         '''.format(column, table, fields_query))
 
     for r in result:
