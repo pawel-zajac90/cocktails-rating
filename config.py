@@ -1,5 +1,4 @@
 import os
-import sys
 
-db_path = os.path.join(sys.path[0], 'db/cocktails.db')
+db_path = os.path.abspath(os.path.dirname('cocktails.db'))
 port = '8080'
