@@ -1,7 +1,6 @@
-import pytest
-from testowy import MyClass
+from testowy import Pubs, Cocktails
 from unittest import mock
-import json
+
 
 
 class TestPubs:
@@ -13,7 +12,7 @@ class TestPubs:
         mock_model = mock.Mock()
         mock_model.query.all.side_effect = mock_pub1
 
-        assert MyClass().show(mock_model)
+        assert Pubs().show(mock_model)
         mock_model.query.all.assert_called()
 
     def test_show_by_pubs(self):
@@ -28,7 +27,7 @@ class TestPubs:
         mock_model = mock.Mock()
         mock_model.query.filter_by(pub_id=mock_pub_id).all.side_effect = mock_cocktail1
 
-        assert MyClass().show(mock_model, mock_pub_id)
+        assert Pubs().show(mock_model, mock_pub_id)
         mock_model.query.filter_by(pub_id=mock_pub_id).all.assert_called()
 
     def test_add_not_exists(self):
@@ -36,7 +35,7 @@ class TestPubs:
         mock_model = mock.Mock()
         mock_db = mock.MagicMock()
 
-        assert MyClass().add(mock_db, mock_model, mock_name)
+        assert Pubs().add(mock_db, mock_model, mock_name)
         mock_db.session.add.assert_called()
         mock_db.session.commit.assert_called()
 
@@ -46,7 +45,7 @@ class TestPubs:
         mock_db = mock.MagicMock()
         mock_db.session.query(mock_model.pub_id).filter_by(mock_model.pub_id).scalar.side_effect = [True]
 
-        assert MyClass().add(mock_db, mock_model, mock_name) is False
+        assert Pubs().add(mock_db, mock_model, mock_name) is False
 
     def test_delete_not_exists(self):
         mock_id = mock.Mock()
@@ -54,37 +53,59 @@ class TestPubs:
         mock_model = mock.MagicMock()
         mock_db.session.query(mock_model.pub_id).filter_by(mock_model.pub_id).scalar.side_effect = [False]
 
-        assert MyClass().delete(mock_db, mock_model, mock_id) is False
+        assert Pubs().delete(mock_db, mock_model, mock_id) is False
 
     def test_delete_exists(self):
         mock_id = mock.Mock()
         mock_db = mock.MagicMock()
         mock_model = mock.MagicMock()
-        mock_db.session.query(mock_model.pub_id).filter_by(mock_model.pub_id).scalar.side_effect = [True]
+        mock_db.session.query(mock_model.pub_id).filter_by(pub_id=mock_model.pub_id).scalar.side_effect = [True]
 
-        assert MyClass().delete(mock_db, mock_model, mock_id)
+        assert Pubs().delete(mock_db, mock_model, mock_id)
         mock_db.session.commit.assert_called()
 
 
 class TestCocktails():
-    def test_show_by_pubs(self):
-        mock_pub_id = mock.Mock()
-
-
+    def test_show(self):
+        mock_cocktail1 = mock.Mock(return_value=[])
+        mock_cocktail1.cocktail_id = 1
+        mock_db = mock.Mock()
         mock_model = mock.Mock()
-        mock_model.side_effect = [[]]
-    def test_show_by_cocktails(self):
-        mock_cocktail_name = mock.Mock()
+        mock_db.session.query(mock_model).filter_by(cocktail_id=mock_cocktail1.cocktail_id).all.side_effect = mock_cocktail1
+
+        assert Cocktails().show(mock_db, mock_model, mock_cocktail1)
+        mock_db.session.query(mock_model).filter_by(cocktail_id=mock_cocktail1.cocktail_id).all().assert_called()
 
 
     def test_add_exists(self):
-        pass
+        mock_cocktail_id = mock.Mock()
+        mock_db = mock.Mock()
+        mock_model = mock.Mock()
+        mock_db.session.query(mock_model).filter_by(cocktail_id=mock_cocktail_id).first().scalar.side_effect = True
+
+        assert Cocktails().add(mock_db, mock_cocktail_id, mock_model) is False
 
     def test_add_not_exists(self):
-        pass
+        mock_cocktail_id = mock.Mock()
+        mock_db = mock.Mock()
+        mock_model = mock.Mock()
+        mock_db.session.query(mock_model).filter_by(cocktail_id=mock_cocktail_id).first().scalar.side_effect = False
+
+        assert Cocktails().add(mock_db, mock_cocktail_id, mock_model)
 
     def test_delete_not_exists(self):
-        pass
+        mock_cocktail_id = mock.Mock()
+        mock_db = mock.Mock()
+        mock_model = mock.Mock()
+        mock_db.session.query(mock_model).filter_by(cocktail_id=mock_cocktail_id).first().scalar.side_effect = False
+
+        assert Cocktails().delete(mock_db, mock_cocktail_id, mock_model) is False
+
 
     def test_delete_exists(self):
-        pass
+        mock_cocktail_id = mock.Mock()
+        mock_db = mock.Mock()
+        mock_model = mock.Mock()
+        mock_db.session.query(mock_model).filter_by(cocktail_id=mock_cocktail_id).first().scalar.side_effect = True
+
+        assert Cocktails().delete(mock_db, mock_cocktail_id, mock_model)
