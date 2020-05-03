@@ -1,30 +1,23 @@
 import sqlite3
 from config import db_path
 from cocktails_rating.helpers import does_record_exists
-from authorization.auth import token_required
+from testowy import TestowaKlasa
+import json
+
 
 # Classes for management of Pubs and Cocktails tables.
 
 
 class PubsManagement:
-    def __init__(self, con):
-        self.con = con(db_path)
-        self.con.row_factory = sqlite3.Row
-        self.cur = self.con.cursor()
-
     # Get list of all pubs from Pubs table.
-    def get_pubs(self):
-        r = self.cur.execute('''
-                            SELECT *
-                            FROM Pubs 
-                            ''')
-        content = []
-        for _ in r:
-            content.append({'pub_id': _['pub_id'], 'pub_name': _['pub_name']})
-        return content
+    def show(self):
+        result = []
+        for pub in Pubs.query.all():
+            result.append({'id': pub.pub_id, 'name': pub.pub_name})
+        return json.dumps(result)
 
     # Add new pub into Pubs table.
-    def post_pub(self, pub_name):
+    def add(self, pub_name):
         # Check if exist.
         if not does_record_exists(self.cur, 'pub_name', 'Pubs', ('pub_name', pub_name)):
             # Add new pub.
@@ -37,7 +30,7 @@ class PubsManagement:
         return {'Status': 'Failed', 'Description': 'Pub already exist'}
 
     # Delete pub from Pubs table.
-    def delete_pub(self, id):
+    def remove(self, id):
         # Check if exist.
         if does_record_exists(self.cur, 'pub_id', 'Pubs', ('pub_id', id)):
             # Delete pub.
@@ -57,7 +50,7 @@ class CocktailsManagement:
         self.cur = self.con.cursor()
 
     # Get list of cocktails in single pub from Cocktails table.
-    def get_cocktails(self, pub_id):
+    def show(self, pub_id):
         # Check if exist.
         if does_record_exists(self.cur, 'pub_id', 'Pubs', ('pub_id', pub_id)):
             # Get list.
@@ -67,13 +60,12 @@ class CocktailsManagement:
                                 '''.format(pub_id))
             content = []
             for _ in r:
-                content.append({'drink_id': _['drink_id'], 'drink_name': _['drink_name'], 'pub_id': _['pub_id'],
-                                'rate': _['rate']})
+                content.append({'drink_id': _['drink_id'], 'drink_name': _['drink_name'], 'pub_id': _['pub_id']})
             return content
         return {'Status': 'Failed', 'Description': "Pub doesn't exist."}
 
     # Add new cocktail to Cocktails table.
-    def post_cocktail(self, drink_name, pub_id):
+    def add(self, drink_name, pub_id):
         # Check if exist.
         if not does_record_exists(self.cur, ('drink_name', 'pub_id'), 'Cocktails', ('drink_name', drink_name), ('pub_id', pub_id)):
             # Add new cocktail.
@@ -86,7 +78,7 @@ class CocktailsManagement:
         return {'Status': 'Failed', 'Description': 'Cocktail already exist in this pub.'}
 
     # Delete cocktail from Cocktails table.
-    def delete_cocktail(self, drink_id):
+    def remove(self, drink_id):
         # Check if exist.
         if does_record_exists(self.cur, 'drink_id', 'Cocktails', ('drink_id', drink_id)):
             # Delete cocktail.

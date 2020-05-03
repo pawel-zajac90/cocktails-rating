@@ -9,15 +9,15 @@ class Pubs(Resource):
         self.r = pubs_management(sqlite3.connect)
 
     def get(self):
-        return self.r.get_pubs()
+        return self.r.show()
 
     @token_required
     def post(self, pub_name):
-        return self.r.post_pub(pub_name)
+        return self.r.add(pub_name)
 
     @token_required
     def delete(self, id):
-        return self.r.delete_pub(id)
+        return self.r.remove(id)
 
 
 # Cocktails management
@@ -26,15 +26,15 @@ class Cocktails(Resource):
         self.r = cocktails_management(sqlite3.connect)
 
     def get(self, pub_id):
-        return self.r.get_cocktails(pub_id)
+        return self.r.show(pub_id)
 
     @token_required
     def post(self, drink_name, pub_id):
-        return self.r.post_cocktail(drink_name, pub_id)
+        return self.r.add(drink_name, pub_id)
 
     @token_required
     def delete(self, drink_id):
-        return self.r.delete_cocktail(drink_id)
+        return self.r.remove(drink_id)
 
 
 # Rating system

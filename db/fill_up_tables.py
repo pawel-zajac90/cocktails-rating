@@ -118,10 +118,9 @@ if __name__ == '__main__':
     con = sqlite3.connect(db_path)
     con.row_factory = sqlite3.Row
     fill = Fill(con.cursor())
-    fill.fill_pubs(10)
-    fill.fill_cocktails(10)
+    fill.fill_pubs(3)
+    fill.fill_cocktails(4)
     fill.fill_rates()
     fill.fill_users(3)
     data = fill.fill_passwords()
     con.commit()
-    save_to_file(data)
