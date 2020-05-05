@@ -1,23 +1,61 @@
-from cocktails_rating import management, rating
-from flask import Flask, Blueprint
+from flask import Flask, request
 from flask_restful import Api
 from config import port
-from cocktails_rating import rating, management
-from authorization import auth
 from flask_sqlalchemy import SQLAlchemy
-
+from cocktails_rating.management import PubsManagement, CocktailsManagement
+from db.models import PubModel, CocktailModel, RatingModel
 
 app = Flask(__name__)
 app.config['secret_key'] = 'thisisthesecretkey'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db/cocktails.db'
 db = SQLAlchemy(app)
-# api_bp = Blueprint('api', __name__)
-# api = Api(api_bp)
 
 
-@app.route('/pubs', methods = ['GET'])
+@app.route('/pubs', methods = ['GET', 'POST', 'DELETE'])
 def pubs():
-    return 'Hello'
+    if request.method == 'GET':
+        data = request.json
+        if not data:
+            return PubsManagement(db).show_all(model=PubModel)
+        else:
+            pub_id = data['pub_id']
+            return PubsManagement(db).show_by_pubs(model=CocktailModel, model2=RatingModel, pub_id=pub_id)
+
+    elif request.method == 'POST':
+        pub_name = request.json['pub_name']
+        return PubsManagement(db).add(model=PubModel, pub_name=pub_name)
+
+    elif request.method == 'DELETE':
+        pub_id = request.json['pub_id']
+        return PubsManagement(db).delete(model=PubModel, pub_id=pub_id)
+
+@app.route('/cocktails', methods = ['GET', 'POST', 'DELETE'])
+def cocktails():
+    if request.method == 'GET':
+        data = request.json
+        if not data:
+            return 'False'
+        else:
+            cocktail_name = data["cocktail_name"]
+            return CocktailsManagement(db).show(model=CocktailModel, model2=RatingModel, cocktail_name=cocktail_name)
+
+    elif request.method == 'POST':
+        data = request.json
+        if not data:
+            return 'False'
+        else:
+            cocktail_name = request.json['cocktail_name']
+            pub_id = request.json['pub_id']
+            return CocktailsManagement(db).add(model=CocktailModel,
+                                               cocktail_name=cocktail_name,
+                                               pub_id=pub_id)
+
+    elif request.method == 'DELETE':
+        pub_id = request.json['pub_id']
+        return PubsManagement(db).delete(model=PubModel, pub_id=pub_id)
+
+
+
 # api.add_resource(
 #     Pubs,
 #     '/cocktails-rating/v1.0/pubs',  # GET
@@ -65,4 +103,4 @@ def pubs():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=port)
+    app.run(debug=True, port=5555)

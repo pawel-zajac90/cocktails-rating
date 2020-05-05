@@ -39,7 +39,7 @@ class Fill:
                             VALUES (?, ?, ?);
                             ''', cocktails_list)
 
-    def fill_rates(self):
+    def fill_ratings(self):
         ids = self.cur.execute('''
                         SELECT cocktail_id, pub_id
                         FROM Cocktails
@@ -47,12 +47,12 @@ class Fill:
         cocktails = []
         for id in ids:
             for _ in range(5):
-                rate = randint(1, 5)
-                cocktails.append((None, id['cocktail_id'], id['pub_id'], rate))
+                rating = randint(1, 5)
+                cocktails.append((None, id['cocktail_id'], rating))
 
         self.cur.executemany('''
-                    INSERT INTO Rates (rate_id, cocktail_id, pub_id, rate)
-                    VALUES (?, ?, ?, ?);
+                    INSERT INTO Ratings (rating_id, cocktail_id, rating)
+                    VALUES (?, ?, ?);
                     ''', cocktails)
 
     def fill_users(self, users_number):
@@ -120,7 +120,7 @@ if __name__ == '__main__':
     fill = Fill(con.cursor())
     fill.fill_pubs(3)
     fill.fill_cocktails(4)
-    fill.fill_rates()
+    fill.fill_ratings()
     fill.fill_users(3)
     data = fill.fill_passwords()
     con.commit()
