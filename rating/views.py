@@ -47,12 +47,6 @@ def cocktail(cocktail_id):
         db.session.commit()
         return json.dumps({'Status': 'Rating added succesfully.'})
 
-@rating.route('/testowa', methods=['GET', 'POST'])
-def sprawdzenie():
-    len(Rating.query.filter_by(cocktail_id=3).all())
-    print(str(Rating.query.filter_by(cocktail_id=3).count()))
-    return result
-
 
 # @rating.route('/add/pub', methods=['GET', 'POST'])
 # def moderate():
