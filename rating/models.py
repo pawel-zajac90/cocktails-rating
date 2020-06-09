@@ -8,6 +8,7 @@ class Pub(db.Model):
     name = db.Column(db.String(64), unique=True)
     cocktails = db.relationship('Cocktail', backref='pubs')
 
+
 class Cocktail(db.Model):
     __tablename__ = 'cocktails'
     id = db.Column(db.Integer, primary_key=True)
@@ -39,3 +40,4 @@ class Role(db.Model):
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
+

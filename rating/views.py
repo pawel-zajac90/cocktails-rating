@@ -4,6 +4,7 @@ import json
 from .forms import NewPubForm
 from cocktails_rating import db
 from flask import redirect, request
+from flask_sqlalchemy import SQLAlchemy
 
 
 # Show all pubs on one site
@@ -45,6 +46,12 @@ def cocktail(cocktail_id):
         db.session.add(rating)
         db.session.commit()
         return json.dumps({'Status': 'Rating added succesfully.'})
+
+@rating.route('/testowa', methods=['GET', 'POST'])
+def sprawdzenie():
+    len(Rating.query.filter_by(cocktail_id=3).all())
+    print(str(Rating.query.filter_by(cocktail_id=3).count()))
+    return result
 
 
 # @rating.route('/add/pub', methods=['GET', 'POST'])
