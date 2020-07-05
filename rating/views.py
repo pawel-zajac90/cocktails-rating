@@ -1,63 +1,120 @@
 from . import rating
 from .models import Pub, Cocktail, Rating
-import json
-from .forms import NewPubForm
+from .forms import NewPubForm, NewCocktailForm
 from cocktails_rating import db
 from flask import redirect, request
 from flask_sqlalchemy import SQLAlchemy
+from flask import make_response, redirect, url_for, session, jsonify
+from helpers.does_record_exist import does_not_exist, does_exist
 
 
 # Show all pubs on one site
 @rating.route('/', methods=['GET'])
 def index():
+    if Pub.query.first() is None:
+        return does_not_exist
+
     pubs_list = []
     for pub in Pub.query.all():
         pubs_list.append({'pub_id': pub.id, 'pub_name': pub.name})
-    return json.dumps(pubs_list)
+    response = make_response(jsonify(pubs=pubs_list), 200)
+    return response
 
 
 # Show pub selected by id
-@rating.route('/pub/<int:pub_id>', methods=['GET'])
-def pub(pub_id):
+@rating.route('/pub', methods=['GET'])
+def pub():
+    pub_id = request.json['pub_id']
+    record = Cocktail.query.filter_by(pub_id=pub_id).first()
+    if record is None:
+        return does_not_exist
+
     cocktails_list = []
     for cocktail in Cocktail.query.filter_by(pub_id=pub_id).all():
         ratings = 0
         for rating in cocktail.ratings:
             ratings += rating.rating
         avg = ratings/len(cocktail.ratings)
-        cocktails_list.append({'cocktail_id': cocktail.id, 'cocktail_name': cocktail.name, 'average_rating': avg})
-    return json.dumps(cocktails_list)
+        cocktails_list.append({'cocktail_id': cocktail.id, 'cocktail_name': cocktail.name,
+                               'description': cocktail.description, 'average_rating': avg})
+    response = make_response(jsonify(cocktails=cocktails_list), 200)
+    return response
 
 
 # Show cocktail selected by id from pubs list
-@rating.route('/cocktail/<int:cocktail_id>', methods=['GET', 'POST'])
-def cocktail(cocktail_id):
-    if request.method == 'GET':
-        record = Cocktail.query.filter_by(id=cocktail_id).first()
-        response = {'cocktail_id': record.id, 'cocktail_name': record.name, 'pub_id': record.pub_id,
-                    'description': record.description}
-        return json.dumps(response)
+@rating.route('/pub/cocktail', methods=['GET'])
+def cocktail():
+    cocktail_id = request.json['cocktail_id']
+    record = Cocktail.query.filter_by(id=cocktail_id).first()
+
+    if record is None:
+        return does_not_exist
+
+    response = make_response(jsonify(cocktail_id=record.id, cocktail_name=record.name, pub_id=record.pub_id,
+                                     description=record.description), 200)
+    return response
+
+
+@rating.route('/rating', methods=['GET', 'POST'])
+def cocktails_rating():
+    if request.method =='GET':
+        if Cocktail.query.first() is None:
+            return does_not_exist
+
+        cocktails_list = []
+        for c in Cocktail.query.all():
+            ratings = 0
+            for rating in c.ratings:
+                ratings += rating.rating
+            avg = ratings / len(c.ratings)
+            cocktails_list.append(
+                {'cocktail_id': c.id, 'cocktail_name': c.name, 'description': c.description,
+                 'average_rating': avg})
+        response = make_response(jsonify(cocktails_list), 200)
+        return response
+
     elif request.method == 'POST':
+        if request.json is None:
+            return redirect(url_for('rating.rating'), 400)
+
         rating = request.json['rating']
         cocktail_id = request.json['cocktail_id']
-        if Cocktail.query.filter_by(id=cocktail_id).first() is None:
-            return json.dumps({'Status': 'Error, record does not exist.'})
-        rating = Rating(cocktail_id=cocktail_id, rating=rating)
-        db.session.add(rating)
+        record = Cocktail.query.filter_by(id=cocktail_id).first()
+        if record is None:
+            return does_not_exist
+
+        rate = Rating(cocktail_id=cocktail_id, rating=rating)
+        db.session.add(rate)
         db.session.commit()
-        return json.dumps({'Status': 'Rating added succesfully.'})
+        return redirect(url_for('rating.rating'), 200)
 
 
-# @rating.route('/add/pub', methods=['GET', 'POST'])
-# def moderate():
-#     form = NewPubForm()
-#     name = form.name.data
-#     if Pub.query.filter_by(name=name).first() is not None:
-#         return json.dumps({'Status': 'Error, this pub already exist'})
-#     pub = Pub(name=name)
-#     db.session.add(pub)
-#     db.session.commit()
-#     return json.dumps({'Status': 'Pub added succesfully.'})
+@rating.route('/add/pub', methods=['POST'])
+def add_pub():
+    form = NewPubForm()
+    name = form.name.data
+    if Pub.query.filter_by(name=name).first() is not None:
+        return does_exist()
+    pub = Pub(name=name)
+    db.session.add(pub)
+    db.session.commit()
+    return redirect(url_for('rating.index'), 300)
+
+
+@rating.route('/add/cocktail', methods=['POST'])
+def add_cocktail():
+    form = NewCocktailForm()
+    name = form.name.data
+    id = form.pub_id.data
+    description = form.description.data
+    if Cocktail.query.filter_by(name=name).first() is not None:
+        return does_exist()
+    elif Pub.query.filter_by(id=id).first() is None:
+        return does_not_exist()
+    cocktail = Cocktail(name=name, pub_id=id, description=description)
+    db.session.add(cocktail)
+    db.session.commit()
+    return redirect(url_for('rating.index'), 300)
 
 
 
