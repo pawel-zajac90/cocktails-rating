@@ -31,7 +31,7 @@ def downgrade():
     op.create_table('ratings',
     sa.Column('id', sa.INTEGER(), nullable=False),
     sa.Column('cocktail_id', sa.INTEGER(), nullable=True),
-    sa.Column('rating', sa.INTEGER(), nullable=True),
+    sa.Column('api', sa.INTEGER(), nullable=True),
     sa.ForeignKeyConstraint(['cocktail_id'], ['cocktails.id'], ),
     sa.PrimaryKeyConstraint('id')
     )

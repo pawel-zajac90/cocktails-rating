@@ -1,17 +1,12 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+import os
 from flask_migrate import Migrate
+from app import create_app, db
+from app.models import Pub, Cocktail, Rating, Role, Permission, User
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///example_database'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'hyrybybydyby'
-db = SQLAlchemy(app)
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)
 
-
-if __name__ == '__main__':
-    from rating import rating as rating_blueprint
-
-    app.register_blueprint(rating_blueprint)
-    app.run(debug=True, port=8888)
+@app.shell_context_processor
+def make_shell_context():
+    return dict(db=db, User=User, Role=Role, Permission=Permission,
+                Rating=Rating, Cocktail=Cocktail, Pub=Pub)

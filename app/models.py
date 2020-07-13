@@ -1,5 +1,5 @@
 from flask_login import UserMixin, AnonymousUserMixin
-from cocktails_rating import db
+from app import db
 
 
 class Pub(db.Model):

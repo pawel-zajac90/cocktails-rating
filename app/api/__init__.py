@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-rating = Blueprint('rating', __name__)
+rating = Blueprint('api', __name__)
 
 from . import views
