@@ -20,7 +20,7 @@ Flask==1.1.2
 Flask-SQLAlchemy==2.4.3
 future==0.18.2
 gpg===1.13.1-unknown
-httplib2==0.14.0
+httplib2==0.19.0
 idna==2.8
 itsdangerous==1.1.0
 Jinja2==2.11.2
