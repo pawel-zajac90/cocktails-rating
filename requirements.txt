@@ -23,7 +23,7 @@ gpg===1.13.1-unknown
 httplib2==0.14.0
 idna==2.8
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 keyring==18.0.1
 language-selector==0.1
 launchpadlib==1.10.13
